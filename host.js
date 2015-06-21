@@ -8,9 +8,9 @@ var http = require("http"),
 http.createServer(function(request, response) {
 
   var uri = url.parse(request.url).pathname
-    , filename = path.join(basePath, uri);
+    , filename = path.join(basePath+'', uri);
 
-  path.exists(filename, function(exists) {
+  fs.exists(filename, function(exists) {
     if(!exists) {
       response.writeHead(404, {"Content-Type": "text/plain"});
       response.write("404 Not Found\n");
