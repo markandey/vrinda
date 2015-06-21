@@ -9,11 +9,8 @@ html,body{
     overflow: hidden;
 }
 #main{
-    position: absolute;
-    height: 100%;
-    width:  100%;
     min-height: 400px;
-    margin:  10px 10px 0px 10px;
+    margin:  0 auto;
     padding: 10px;
     background: #fff;
     font-family: sans-serif;
