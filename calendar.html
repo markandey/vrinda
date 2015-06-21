@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>Wall:Calendar</title>
+    <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body class="yui3-skin-sam">
+<div id="main">
+    <div class="card">
+        <div id="mycal">
+            <div id="calendar">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+YUI({ skin: 'sam' }).use('calendar', function (Y) {
+
+var calendar = new Y.Calendar({
+          contentBox: "#calendar",
+          width:'95%',
+          showPrevMonth: true,
+          showNextMonth: true,
+          date: new Date()}).render();
+
+calendar.selectDates([new Date()]);
+
+});
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <title>Wall</title>
+    <link rel="stylesheet" type="text/css" href="./font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script type="text/javascript">
+    function newspaper(news) {
+        var i = 0,
+            items = news.query.results.item.slice(0, 6),
+            count = items.length,
+            list=document.getElementById('newslist'),
+            li='<li><div class="title">{title}</div><div class="desc">{description}</div></li>',html=[];
+        for (i = 0; i < count; i++) {
+            html.push(li.replace('{title}', items[i].title).replace('{description}',items[i].description));
+        }
+        list.innerHTML=html.join('');
+    }
+    </script>
+</head>
+
+<body>
+    <div id="main">
+        <div class="card">
+            <div class="fa fa-newspaper-o news"></div>
+            <ul id="newslist">
+            </ul>
+        </div>
+    </div>
+   <script src="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feed%20where%20url%3D'http%3A%2F%2Fnews.yahoo.com%2Frss%2Ftopstories'&format=json&callback=newspaper"></script> 
+    <!--<script src="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feed%20where%20url%3D'http%3A%2F%2Fwww.nytimes.com%2Fservices%2Fxml%2Frss%2Fnyt%2FHomePage.xml'&format=json&callback=newspaper"></script>-->
+
+</body>
+
+</html>

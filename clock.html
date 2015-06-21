@@ -1,0 +1,60 @@
+<html>
+<head>
+    <title>Wall</title>
+    <link rel="stylesheet" type="text/css" href="./font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <style type="text/css">
+    body,html,#main{
+        background: #000;
+    }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div class="card">
+        <div id="clock">
+        <canvas id="display" width="900" height="400">
+        </canvas>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="segment-display.js"></script>
+<script type="text/javascript">
+
+  var display = new SegmentDisplay("display");
+  display.pattern         = "##:##:##";
+  display.displayAngle    = 6;
+  display.digitHeight     = 20;
+  display.digitWidth      = 14;
+  display.digitDistance   = 2.5;
+  display.segmentWidth    = 2;
+  display.segmentDistance = 0.3;
+  display.segmentCount    = 7;
+  display.cornerType      = 3;
+  display.colorOn         = "#1111FF";
+  display.colorOff        = "#000020";
+  display.draw();
+
+</script>
+<script>
+window.setInterval('animate()', 1000);
+  function animate() {
+    var time    = new Date();
+    var hours   = time.getHours();
+    if(hours > 12)
+    {
+        hours =hours-12;
+    }
+    if(hours ==0){
+        hours =12
+    }
+    var minutes = time.getMinutes();
+    var seconds = time.getSeconds();
+    var value   = ((hours < 10) ? ' ' : '') + hours
+                + ':' + ((minutes < 10) ? '0' : '') + minutes
+                + ':' + ((seconds < 10) ? '0' : '') + seconds;
+    display.setValue(value);
+  }
+</script>
+</body>
+</html>

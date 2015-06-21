@@ -1,0 +1,100 @@
+html,body{
+    text-align: center;
+    background: #eee;
+    margin: 0;
+    padding:0;
+    position: relative;
+}
+#main{
+    position: absolute;
+    height: 100%;
+    width:  100%;
+    min-height: 400px;
+    margin:  10px 10px 0px 10px;
+    padding: 10px;
+    background: #fff;
+    font-family: sans-serif;
+}
+.programs{
+    list-style-type: none;
+    width:  940px;
+    margin: auto;
+    overflow: hidden;
+    display: block;
+}
+.programs a,
+.programs a:hover
+.programs a:visited
+.programs a:active{
+    text-decoration: inherit;
+    color: inherit;
+}
+.programs li{
+    display: block;
+    cursor: pointer;
+    float: left;
+    width: 120px;
+    margin: 50px;
+    padding: 20px;
+    overflow: hidden;
+}
+.programs li:hover{
+    background: rgba(225,225,225,.5);
+    color:  #E05519;
+}
+.programs li .fa{
+    font-size: 110px;
+}
+::selection {
+  background: #E05519;; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: #E05519;; /* Gecko Browsers */
+}
+.card  .fa{
+    font-size: 110px;
+}
+.card .news-head{
+    font-size: 60px;
+    max-width: 900px;
+    margin: auto;
+}
+
+
+#mycal{
+    margin: 10px auto;
+    text-align: center;
+}
+
+.yui3-calendar-day,
+.yui3-calendar-prevmonth-day,
+.yui3-calendar-nextmonth-day,
+.yui3-calendar-weekday{
+    font-size: 60px;
+}
+#mycal .yui3-calendar-day-selected{
+    background: rgba(225,225,225,.5);
+    color:  #E05519;
+}
+
+
+
+
+#newslist{
+    list-style-type: none;
+}
+#newslist li{
+    display: inline-block;
+    overflow: hidden;
+    width: 400px;
+    height: 200px;
+    font-family: serif;
+    text-align: left;
+    margin: 10px;
+    padding: 10px;
+    border-left: 1px solid rgba(30,30,30,.5);
+    font-size:14px;
+}
+#newslist li .title{
+    font-size: 30px;
+}

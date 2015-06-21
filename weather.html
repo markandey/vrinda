@@ -1,0 +1,273 @@
+<html>
+
+<head>
+    <title>Wheather</title>
+    <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <style type="text/css">
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 40px;
+    }
+    
+    #main {
+        text-align: center;
+        min-height: 100%;
+        min-width: auto;
+        background-color: #333;
+        background-size: auto 110%;
+        -webkit-filter: blur(10px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+    }
+    
+    #inner-container {
+        text-shadow: #555 1px 1px 1px;
+        text-align: left;
+        color: #fff;
+        height: 400px;
+        width: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 2;
+    }
+    
+    #inner-container .condition {
+        height: 300px;
+        position: fixed;
+        padding: 10px;
+        bottom: 0px;
+        left: 0px;
+        width: auto;
+    }
+    
+    #inner-container .temp {
+        font-size: 500%;
+    }
+    
+    .footer {
+        position: fixed;
+        bottom: 10px;
+        right: 5px;
+        left: 5px;
+        overflow: hidden;
+        font-size: 50%;
+    }
+    
+    .flickr {
+        float: left;
+    }
+    
+    .yahoo {
+        float: right;
+    }
+    
+    .forecast {
+        overflow: hidden;
+    }
+    
+    .forecast .low {
+        float: left;
+    }
+    
+    .forecast .high {
+        float: right;
+    }
+    
+    .location {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        font-size: 120%;
+    }
+    
+    .bold {
+        font-weight: bold;
+        font-size: 120%;
+    }
+    
+    .current {
+        padding-bottom: 10px;
+    }
+    
+    .current: before {
+        border-right: 14px solid transparent;
+    }
+    
+    .location: before {
+        margin-right: 10px;
+    }
+    
+    .low: before,
+    .high: before {
+        margin-right: 25px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="">
+    </div>
+    <div id="inner-container">
+        <div class="location fa fa-map-marker">
+            &nbsp; ... &nbsp;
+        </div>
+        <div class="condition">
+            <div class="current fa fa-cloud">...</div>
+            <div class="forecast">
+                <div class="high fa fa-arrow-up">
+                    -..
+                </div>
+                <di class="low fa fa-arrow-down">
+                    +..
+                </di>
+            </div>
+            <div class="temp">
+                ..
+            </div>
+            <div class="footer">
+                <div class="flickr">(c) markandey on <span class="bold">Flickr</span>
+                </div>
+                <div class="yahoo"><img src="yahoo-logo.png"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+YUI().use('yql', 'node', 'event', function(Y) {
+    var imgObject = null
+    var nophoto = false;
+
+    function getWheather(citiName) {
+        var citiQuery = 'select * from geo.placefinder where text="{{citiName}}"';
+        var weatherQuery = 'select * from weather.forecast where woeid={{woeid}}';
+        // var flickrQuery = 'select * from flickr.photos.search where has_geo="true" and text="{{citiName}}" and api_key="0fbb2b721757f77a6a9d038f4649a2bf"';
+        var flickrQuery = 'select * from flickr.photos.search where has_geo="true" and text="{{citiName}}" and api_key="0fbb2b721757f77a6a9d038f4649a2bf" and group_id= "1463451@N25"';
+        var q = citiQuery.replace("{{citiName}}", citiName);
+
+        function onGetPhotos(r) {
+            // try{
+            var photos = r.query.results.photo;
+            var css = "",
+                img = "";
+            var i = Math.floor(Math.random(1) * 10)
+            img = "https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_z.jpg";
+            img = img.replace('{farm-id}', photos[i].farm);
+            img = img.replace('{server-id}', photos[i].server);
+            img = img.replace('{secret}', photos[i].secret);
+            img = img.replace('{id}', photos[i].id);
+            css = css + "url('" + img + "')";
+            imgObject = new Image();
+            imgObject.src = img;
+            imgObject.onload = function() {
+                if (!nophoto) {
+                    Y.one("#main").setStyle("background-image", css);
+                }
+                resize();
+            }
+
+
+            // }
+            // catch(e){
+
+            // }
+
+        }
+
+        function onWheatherData(r) {
+            var cond = r.query.results.channel.item.condition;
+            Y.one("#inner-container .condition .temp").setContent(cond.temp);
+            Y.one("#inner-container .current ").setContent(" &nbsp;" + cond.text);
+            Y.one("#inner-container .location").setContent(" &nbsp;" + r.query.results.channel.title.replace('Yahoo! Weather - ', ''));
+            Y.one("#inner-container .forecast .high").setContent(" &nbsp;" + r.query.results.channel.item.forecast[0].high);
+            Y.one("#inner-container .forecast .low").setContent(" &nbsp;" + r.query.results.channel.item.forecast[0].low);
+
+            var fq = flickrQuery.replace("{{citiName}}", citiName);
+            fq = fq.replace("{{tag}}", cond.text);
+            Y.YQL(fq, onGetPhotos, {}, {
+                base: '://query.yahooapis.com/v1/public/yql?',
+                proto: 'https'
+            });
+
+        }
+
+        function onWoeIDRecieve(r) {
+            var woeId;
+            if (r.query.results.Result[0]) {
+                woeId = r.query.results.Result[0].woeid;
+            } else {
+                woeId = r.query.results.Result.woeid;
+            }
+
+            q = weatherQuery.replace("{{woeid}}", woeId);
+            Y.YQL(q, onWheatherData);
+
+        }
+        // var fq = flickrQuery.replace("{{citiName}}", citiName);
+        Y.YQL(q, onWoeIDRecieve);
+
+    }
+    var citi = window.location.search.substr(1).match(/citi=([^&]+)/);
+    var photo = window.location.search.substr(1).match(/photo=([^&]+)/);
+
+    if (photo && photo[1] === "false") {
+        nophoto = true;
+    }
+    citi = citi || 'San Francisco';
+    citi = unescape(citi[1]);
+    getWheather(citi);
+
+    function resize() {
+        var w = Y.one("body").get("winWidth");
+        var h = Y.one("body").get("winHeight");
+
+        var hr = 500,
+            bfsH = (25 * h) / hr,
+            chH = 230 * h / hr,
+            ichH = 400 * h / hr,
+            mhH = 400 * h / hr;
+
+        var wr = 350,
+            bfsW = (22 * w) / wr,
+            chW = 300 * w / wr,
+            ichW = 400 * w / wr,
+            mhW = 400 * w / wr;
+
+        var bfs = Math.min(bfsH, bfsW);
+        ch = Math.min(chW, chH);
+        ich = Math.min(ichH, ichW);
+        mh = Math.min(mhW, mhH);
+
+        Y.one("body").setStyle("fontSize", bfs);
+        Y.one("#inner-container .condition").setStyle("height", ch);
+        Y.one("#inner-container").setStyle("height", ich);
+        Y.one("#main").setStyle("height", mh);
+        if (imgObject) {
+            ior = imgObject.width / imgObject.height;
+            vpr = w / h;
+            if (ior < vpr) {
+                Y.one("#main").setStyle("backgroundSize", "110% auto");
+            } else {
+                Y.one("#main").setStyle("backgroundSize", "auto 110%");
+            }
+        }
+    }
+    Y.on('windowresize', resize);
+    resize();
+});
+</script>
+
+</html>
+<script type="text/javascript">
+</script>
