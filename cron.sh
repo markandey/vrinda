@@ -2,4 +2,4 @@
 cd /home/pi/vrinda
 git pull
 killall -TERM node
-node host.js 8888
+node /home/pi/vrinda/host.js 8888 /home/pi/vrinda
