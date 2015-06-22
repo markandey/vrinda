@@ -3,7 +3,7 @@ var timeSlots = [{
     isTime: function() {
         var time = new Date();
         var m = time.getMinutes();
-        if (m === 1 || m === 30 || m === 12) {
+        if (m === 1 || m === 30 || m === 16) {
             return true;
         }
         return false;
@@ -14,13 +14,14 @@ var timeSlots = [{
     isTime: function() {
         var time = new Date();
         var s = time.getSeconds();
-        if (s > 40 && s < 59) {
+        if (s > 40 && s < 45) {
             return true;
         }
         return false;
     },
     path: 'calendar.html'
-}
+},
+
 {
     isTime: function() {
         var time = new Date();
