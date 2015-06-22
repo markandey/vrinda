@@ -9,10 +9,11 @@ html,body{
     overflow: hidden;
 }
 #main{
-    min-height: 400px;
+    min-height: 100vh;
     margin:  0 auto;
     padding: 5px;
-    background: #fff;
+    background: #FFFBF1;
+    color: #222;
     font-family: sans-serif;
 }
 .programs{
@@ -72,19 +73,22 @@ html,body{
 .yui3-calendar-weekday{
     font-size: 60px;
 }
+
 #mycal .yui3-calendar-day-selected{
     background: rgba(225,225,225,.5);
     color:  #E05519;
 }
 
-@keyframes marquee {
+
+
+@-webkit-keyframes marquee {
   from { transform: translateY(0px); }
   to { transform: translateY(-2000px); }
 }
 
 #newslist{
     list-style-type: none;
-    animation: marquee 30s linear infinite;
+    -webkit-animation: marquee 30s linear infinite;
     overflow: hidden;
 }
 #newslist img{
