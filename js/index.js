@@ -3,7 +3,7 @@ var timeSlots = [{
         isTime: function() {
             var time = new Date();
             var m = time.getMinutes();
-            if (m === 1 || m === 30 || m === 35) {
+            if (m === 1 || m === 30 || m === 20) {
                 return true;
             }
             return false;
@@ -40,12 +40,13 @@ var timeSlots = [{
 ];
 
 function ding() {
-    var ding = document.getElementById("ding");
+    var ding = new Audio("sound/ding.wav");
+
     ding.play();
-    setTimeout(function(){
+    setTimeout(function() {
         ding.pause();
         ding.currentTime = 0;
-    },2000);
+    }, 2000);
 }
 
 function run() {
