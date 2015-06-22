@@ -13,8 +13,11 @@ var timeSlots = [{
         isTime: function() {
             var time = new Date();
             var m = time.getMinutes();
-            if (m === 1 || m === 30) {
-                ding();
+            var s = time.getSeconds();
+            if (m === 1 || m === 30 || m===9) {
+                if (s % 10 == 0) {
+                    ding();
+                }
                 return true;
             }
             return false;
