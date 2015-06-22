@@ -3,13 +3,25 @@ var timeSlots = [{
     isTime: function() {
         var time = new Date();
         var m = time.getMinutes();
-        if (m === 1 || m === 30 || m===12) {
+        if (m === 1 || m === 30 || m === 12) {
             return true;
         }
         return false;
     },
     path: 'news.html'
-}, {
+}, 
+{
+    isTime: function() {
+        var time = new Date();
+        var s = time.getSeconds();
+        if (s > 40 && s < 59) {
+            return true;
+        }
+        return false;
+    },
+    path: 'calendar.html'
+}
+{
     isTime: function() {
         var time = new Date();
         var s = time.getSeconds();
@@ -25,7 +37,8 @@ var timeSlots = [{
     },
     path: 'clock.html'
 }];
-function ding(){
+
+function ding() {
     var ding = document.getElementById("ding");
     ding.play();
 }

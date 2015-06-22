@@ -77,24 +77,29 @@ html,body{
     color:  #E05519;
 }
 
-
-
+@keyframes marquee {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-2000px); }
+}
 
 #newslist{
     list-style-type: none;
+    animation: marquee 30s linear infinite;
+    overflow: hidden;
+}
+#newslist img{
+    zoom:300%;
 }
 #newslist li{
     display: inline-block;
     overflow: hidden;
-    width: 400px;
-    height: 200px;
     font-family: serif;
     text-align: left;
+
     margin: 10px;
     padding: 10px;
-    border-left: 1px solid rgba(30,30,30,.5);
-    font-size:14px;
+    font-size:50px;
 }
 #newslist li .title{
-    font-size: 30px;
+    font-size: 100px;
 }
