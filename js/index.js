@@ -1,47 +1,50 @@
 var curLocation = "";
 var timeSlots = [{
-    isTime: function() {
-        var time = new Date();
-        var m = time.getMinutes();
-        if (m === 1 || m === 30 || m === 35) {
-            return true;
-        }
-        return false;
+        isTime: function() {
+            var time = new Date();
+            var m = time.getMinutes();
+            if (m === 1 || m === 30 || m === 35) {
+                return true;
+            }
+            return false;
+        },
+        path: 'news.html'
+    }, {
+        isTime: function() {
+            var time = new Date();
+            var s = time.getSeconds();
+            if (s > 40 && s < 45) {
+                return true;
+            }
+            return false;
+        },
+        path: 'calendar.html'
     },
-    path: 'news.html'
-}, 
-{
-    isTime: function() {
-        var time = new Date();
-        var s = time.getSeconds();
-        if (s > 40 && s < 45) {
-            return true;
-        }
-        return false;
-    },
-    path: 'calendar.html'
-},
 
-{
-    isTime: function() {
-        var time = new Date();
-        var s = time.getSeconds();
-        if (s > 10 && s < 30) {
+    {
+        isTime: function() {
+            var time = new Date();
+            var s = time.getSeconds();
+            if (s > 10 && s < 30) {
+                return true;
+            }
+            return false;
+        },
+        path: 'weather.html?citi=san jose'
+    }, {
+        isTime: function() {
             return true;
-        }
-        return false;
-    },
-    path: 'weather.html?citi=san jose'
-}, {
-    isTime: function() {
-        return true;
-    },
-    path: 'clock.html'
-}];
+        },
+        path: 'clock.html'
+    }
+];
 
 function ding() {
     var ding = document.getElementById("ding");
     ding.play();
+    setTimeout(function(){
+        ding.stop();
+    },2000);
 }
 
 function run() {
