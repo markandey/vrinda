@@ -82,6 +82,11 @@ html,body{
 
 
 @-webkit-keyframes marquee {
+  from { -webkit-transform: translateY(0px); }
+  to { -webkit-transform: translateY(-2000px); }
+}
+
+keyframes marquee {
   from { transform: translateY(0px); }
   to { transform: translateY(-2000px); }
 }
@@ -89,8 +94,13 @@ html,body{
 #newslist{
     list-style-type: none;
     -webkit-animation: marquee 30s linear infinite;
+    animation: marquee 30s linear infinite;
     overflow: hidden;
 }
+
+
+
+
 #newslist img{
     zoom:300%;
 }

@@ -43,7 +43,8 @@ function ding() {
     var ding = document.getElementById("ding");
     ding.play();
     setTimeout(function(){
-        ding.stop();
+        ding.pause();
+        ding.currentTime = 0;
     },2000);
 }
 
