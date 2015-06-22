@@ -1,6 +1,0 @@
-
-
-Set up Time Zone
--------
-   1. tzselect
-   2. dpkg-reconfigure tzdata

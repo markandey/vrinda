@@ -25,6 +25,10 @@ var timeSlots = [{
     },
     path: 'clock.html'
 }];
+function ding(){
+    var ding = document.getElementById("ding");
+    ding.play();
+}
 
 function run() {
     var count = timeSlots.length;
@@ -32,6 +36,7 @@ function run() {
         if (timeSlots[i].isTime()) {
             if (curLocation !== timeSlots[i].path) {
                 curLocation = document.getElementById('main').src = timeSlots[i].path;
+                ding();
             }
             break
         }
