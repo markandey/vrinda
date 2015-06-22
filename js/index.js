@@ -3,7 +3,7 @@ var timeSlots = [{
     isTime: function() {
         var time = new Date();
         var m = time.getMinutes();
-        if (m === 1 || m === 30 || m === 16) {
+        if (m === 1 || m === 30 || m === 35) {
             return true;
         }
         return false;
