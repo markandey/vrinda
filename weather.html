@@ -4,7 +4,7 @@
     <title>Wheather</title>
     <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./font-awesome-4.3.0/css/font-awesome.min.css">
     <style type="text/css">
     html,
     body {
@@ -50,6 +50,7 @@
         bottom: 0px;
         left: 0px;
         width: auto;
+        font-size: 60px;
     }
     
     #inner-container .temp {
@@ -89,7 +90,7 @@
         position: fixed;
         top: 10px;
         right: 10px;
-        font-size: 120%;
+        font-size: 220%;
     }
     
     .bold {
@@ -234,13 +235,13 @@ YUI().use('yql', 'node', 'event', function(Y) {
 
         var hr = 500,
             bfsH = (25 * h) / hr,
-            chH = 230 * h / hr,
+            chH = 300 * h / hr,
             ichH = 400 * h / hr,
             mhH = 400 * h / hr;
 
         var wr = 350,
             bfsW = (22 * w) / wr,
-            chW = 300 * w / wr,
+            chW = 200 * w / wr,
             ichW = 400 * w / wr,
             mhW = 400 * w / wr;
 

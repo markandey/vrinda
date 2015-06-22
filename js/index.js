@@ -1,9 +1,20 @@
+function ding() {
+    var ding = new Audio("sound/ding.wav");
+
+    ding.play();
+    setTimeout(function() {
+        ding.pause();
+        ding.currentTime = 0;
+    }, 2000);
+}
+
 var curLocation = "";
 var timeSlots = [{
         isTime: function() {
             var time = new Date();
             var m = time.getMinutes();
-            if (m === 1 || m === 30 || m === 20) {
+            if (m === 1 || m === 30) {
+                ding();
                 return true;
             }
             return false;
@@ -39,23 +50,12 @@ var timeSlots = [{
     }
 ];
 
-function ding() {
-    var ding = new Audio("sound/ding.wav");
-
-    ding.play();
-    setTimeout(function() {
-        ding.pause();
-        ding.currentTime = 0;
-    }, 2000);
-}
-
 function run() {
     var count = timeSlots.length;
     for (var i = 0; i < count; i++) {
         if (timeSlots[i].isTime()) {
             if (curLocation !== timeSlots[i].path) {
                 curLocation = document.getElementById('main').src = timeSlots[i].path;
-                ding();
             }
             break
         }
