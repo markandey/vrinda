@@ -79,6 +79,21 @@ html,body{
     color:  #E05519;
 }
 
+#mycal{
+  text-align: center;
+}
+#mycal .yui3-widget{
+  margin: auto;
+}
+#mycal .yui3-calendar-header-label{
+  font-size: 60px;
+  color:#E05519;
+}
+#mycal  .yui3-calendarnav-nextmonth,
+#mycal  .yui3-calendarnav-prevmonth{
+  display:  none;
+}
+
 
 
 @-webkit-keyframes marquee {

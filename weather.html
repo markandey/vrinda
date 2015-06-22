@@ -194,12 +194,8 @@ YUI().use('yql', 'node', 'event', function(Y) {
             Y.one("#inner-container .forecast .high").setContent(" &nbsp;" + r.query.results.channel.item.forecast[0].high);
             Y.one("#inner-container .forecast .low").setContent(" &nbsp;" + r.query.results.channel.item.forecast[0].low);
 
-            var fq = flickrQuery.replace("{{citiName}}", citiName);
-            fq = fq.replace("{{tag}}", cond.text);
-            Y.YQL(fq, onGetPhotos, {}, {
-                base: '://query.yahooapis.com/v1/public/yql?',
-                proto: 'https'
-            });
+            //var fq = flickrQuery.replace("{{citiName}}", citiName);
+            //fq = fq.replace("{{tag}}", cond.text);
 
         }
 
@@ -215,7 +211,11 @@ YUI().use('yql', 'node', 'event', function(Y) {
             Y.YQL(q, onWheatherData);
 
         }
-        // var fq = flickrQuery.replace("{{citiName}}", citiName);
+        var fq = flickrQuery.replace("{{citiName}}", citiName);
+        Y.YQL(fq, onGetPhotos, {}, {
+            base: '://query.yahooapis.com/v1/public/yql?',
+            proto: 'https'
+        });
         Y.YQL(q, onWoeIDRecieve);
 
     }
@@ -235,7 +235,7 @@ YUI().use('yql', 'node', 'event', function(Y) {
 
         var hr = 500,
             bfsH = (25 * h) / hr,
-            chH = 330 * h / hr,
+            chH = 340 * h / hr,
             ichH = 400 * h / hr,
             mhH = 400 * h / hr;
 
