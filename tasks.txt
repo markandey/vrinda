@@ -1,1 +1,167 @@
 tasks
+
+
+
+Also record on sox 
+export AUDIODEV=hw:1,0;export AUDIODRIVER=alsa
+
+export LD_LIBRARY_PATH=/usr/local/lib;export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig;pocketsphinx_continuous -samprate 16000 -inmic yes -adcdev plughw:1,0
+
+
+
+1. Fix display
+2. Set up kiosk boot (http://blogs.wcode.org/2013/09/howto-boot-your-raspberry-pi-into-a-fullscreen-browser-kiosk/)
+     Use Epiphany for better html support
+3. Install sphinx
+http://cmusphinx.sourceforge.net/wiki/raspberrypi
+sudo apt-get install swig
+sudo apt-get install python2.7-dev
+
+
+
+
+
+
+
+#### DUMP INSTRUCTION 
+
+Wired Watershed
+MENU
+SKIP TO CONTENT
+HOME
+HOWTO: Boot your Raspberry Pi into a fullscreen browser kiosk
+
+It seems there’s some demand for knowledge of setting up a full-screen, browser-based kiosk on the all-singing Raspberry Pi. Here at Watershed we’ve done this, to drive the screens of our digital signage system. Although we complicate matters a bit (we net-boot the pis, which requires a few extra tweaks – see our blog post on net-booting raspberry pis), we thought it’d be useful to document what we achieved: automatically running Chromium, full-screen, with a single kiosk-mode web-page.
+
+Step 1: Initial setup
+
+For the most part, we’ve used a stock Raspbian raw image, updated to the latest versions; but we’ve then installed several additional packages:
+
+matchbox
+chromium
+x11-xserver-utils
+ttf-mscorefonts-installer
+xwit
+sqlite3
+libnss3
+To do this, run the commands:
+
+sudo apt-get update
+sudo apt-get dist-upgrade
+sudo apt-get install matchbox chromium x11-xserver-utils ttf-mscorefonts-installer xwit sqlite3 libnss3
+sudo reboot
+Step 2: Automatic resolution detection
+
+This was the hardest part for us because we have several monitors of slightly different native resolutions and, through net-booting, only wanted to have one filesystem-image presented to all the Pis. After a few days’ tinkering, I came up with this strategy: set the internal framebuffer to as large as it can be, then detect the monitor’s capabilities and adjust. If you know exactly what resolution your monitor is, just tweak the config.txt file and skip the rest of this step!
+
+So, first set the framebuffer up by adding this to /boot/config.txt:
+
+# 1900x1200 at 32bit depth, DMT mode
+disable_overscan=1
+framebuffer_width=1900
+framebuffer_height=1200
+framebuffer_depth=32
+framebuffer_ignore_alpha=1
+hdmi_pixel_encoding=1
+hdmi_group=2
+Next, add this to /etc/rc.local; it waits for a monitor to be attached to the HDMI socket, probes it for its preferred mode, sets that preferred mode and finally resets the framebuffer ready for X to takeover:
+
+# Wait for the TV-screen to be turned on...
+while ! $( tvservice --dumpedid /tmp/edid | fgrep -qv 'Nothing written!' ); do
+    bHadToWaitForScreen=true;
+    printf "===> Screen is not connected, off or in an unknown mode, waiting for it to become available...\n"
+    sleep 10;
+done;
+
+printf "===> Screen is on, extracting preferred mode...\n"
+_DEPTH=32;
+eval $( edidparser /tmp/edid | fgrep 'preferred mode' | tail -1 | sed -Ene 's/^.+(DMT|CEA) \(([0-9]+)\) ([0-9]+)x([0-9]+)[pi]? @.+/_GROUP=\1;_MODE=\2;_XRES=\3;_YRES=\4;/p' );
+
+printf "===> Resetting screen to preferred mode: %s-%d (%dx%dx%d)...\n" $_GROUP $_MODE $_XRES $_YRES $_DEPTH
+tvservice --explicit="$_GROUP $_MODE"
+sleep 1;
+
+printf "===> Resetting frame-buffer to %dx%dx%d...\n" $_XRES $_YRES $_DEPTH
+fbset --all --geometry $_XRES $_YRES $_XRES $_YRES $_DEPTH -left 0 -right 0 -upper 0 -lower 0;
+sleep 1;
+Step 3: Launching Chromium
+
+With that all done, the installation needs to be told to start-up X using a tailored xinitrc (kept on the boot-partition so that it can easily be edited on a non-Linux machine) by adding the following to /etc/rc.local:
+
+if [ -f /boot/xinitrc ]; then
+    ln -fs /boot/xinitrc /home/pi/.xinitrc;
+    su - pi -c 'startx' &
+fi
+And the xinitrc file looks like this:
+
+#!/bin/sh
+while true; do
+
+    # Clean up previously running apps, gracefully at first then harshly
+    killall -TERM chromium 2>/dev/null;
+    killall -TERM matchbox-window-manager 2>/dev/null;
+    sleep 2;
+    killall -9 chromium 2>/dev/null;
+    killall -9 matchbox-window-manager 2>/dev/null;
+
+    # Clean out existing profile information
+    rm -rf /home/pi/.cache;
+    rm -rf /home/pi/.config;
+    rm -rf /home/pi/.pki;
+
+    # Generate the bare minimum to keep Chromium happy!
+    mkdir -p /home/pi/.config/chromium/Default
+    sqlite3 /home/pi/.config/chromium/Default/Web\ Data "CREATE TABLE meta(key LONGVARCHAR NOT NULL UNIQUE PRIMARY KEY, value LONGVARCHAR); INSERT INTO meta VALUES('version','46'); CREATE TABLE keywords (foo INTEGER);";
+
+    # Disable DPMS / Screen blanking
+    xset -dpms
+    xset s off
+
+    # Reset the framebuffer's colour-depth
+    fbset -depth $( cat /sys/module/*fb*/parameters/fbdepth );
+
+    # Hide the cursor (move it to the bottom-right, comment out if you want mouse interaction)
+    xwit -root -warp $( cat /sys/module/*fb*/parameters/fbwidth ) $( cat /sys/module/*fb*/parameters/fbheight )
+
+    # Start the window manager (remove "-use_cursor no" if you actually want mouse interaction)
+    matchbox-window-manager -use_titlebar no -use_cursor no &
+
+    # Start the browser (See http://peter.sh/experiments/chromium-command-line-switches/)
+    chromium  --app=http://URL.of.your/choice.html
+
+done;
+And that’s all there is to it; just (re)boot your Pi and it should boot, detect the screen and optimise for it, start X, launch Chromium and be ready with your chosen web-page in kiosk-mode!
+
+Optional bonus Step 4: Accelerated X11 Server
+
+Currently (Sep 2013), the default X11 server isn’t exactly optimised for the Raspberry Pi; however, work is afoot and you can install a work-in-progress version fairly easily. This has worked for us and has been nice and stable. YMMV.
+
+UPDATE: Comments have suggested possible problems with newer Rasbian releases. We’ve not verified this either way. You don’t need to install this, everything will work just fine without it; at the time, we were trying to squeeze every last ounce of performance from the Pi, so it seemed pertinent to install this patch.
+
+First, download xorg-server.tar.gz and xserver-xorg-video-fbdev.tar.gz from Simon J Hall’s latest release on github and extract them to the Pi:
+
+sudo tar xfvz xorg-server.tar.gz -C /
+sudo tar xfvz xserver-xorg-video-fbdev.tar.gz -C /
+Next, edit /usr/share/X11/xorg.conf.d/01-fbdev-rpi.conf and change MboxFile to /dev/char_dev and finally, add the following to /etc/rc.local before X11 is launched (i.e. before the bit added in Step 3 above:
+
+if [ ! -e /dev/dmaer_4k ]; then
+    printf "===> Preparing to launch X...\n";
+    modprobe dmaer_master
+    major=$(awk '$2=="dmaer" {print $1}' /proc/devices)
+    mknod /dev/dmaer_4k c $major 0
+    mknod -m 664 /dev/char_dev c 100 0
+    chgrp pi /dev/char_dev
+fi;
+Update: Console access
+
+We’ve been asked how you might get access to the console to control the Pi if you don’t happen to have a network connection handy through which to SSH. The simple answer is to use one of the virtual consoles. Pressing Alt-F1 through Alt-F12 will switch you one of them. If X11 has already started, you’ll often need to press Ctrl-Alt-F1 to ‘break out’, and just Alt-F2 etc thereafter. X11 will take the next available slot, since the default Raspbian defines six consoles, this is usually at Alt-F7.
+
+35
+SEPTEMBER 13, 2013 BY STEWART
+Post navigation
+«
+»
+Search
+
+
+

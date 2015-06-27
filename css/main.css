@@ -98,18 +98,20 @@ html,body{
 
 @-webkit-keyframes marquee {
   from { -webkit-transform: translateY(0px); }
-  to { -webkit-transform: translateY(-2000px); }
+  to { -webkit-transform: translateY(-5000px); }
 }
 
 keyframes marquee {
   from { transform: translateY(0px); }
-  to { transform: translateY(-2000px); }
+  to { transform: translateY(-5000px); }
 }
 
 #newslist{
     list-style-type: none;
-    -webkit-animation: marquee 30s linear infinite;
-    animation: marquee 30s linear infinite;
+    -webkit-animation: marquee 60s linear infinite;
+    animation: marquee 60s linear infinite;
+    -webkit-animation-delay: 2s; 
+    animation-delay: 2s;
     overflow: hidden;
 }
 
@@ -127,8 +129,8 @@ keyframes marquee {
 
     margin: 10px;
     padding: 10px;
-    font-size:50px;
+    font-size:60px;
 }
 #newslist li .title{
-    font-size: 100px;
+    font-size: 140px;
 }
