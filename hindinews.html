@@ -6,18 +6,20 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="js/jquery.keyframes.min.js"></script>
-    <script src="js/news.js">
-    </script>
+    <script src="js/news.js"></script>
+
 </head>
 
 <body>
     <div id="main">
         <div class="card">
+            <!-- <div class="fa fa-newspaper-o news"></div> -->
             <ul id="newslist">
             </ul>
         </div>
     </div>
-   <script src="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feed%20where%20url%3D'http%3A%2F%2Fnews.yahoo.com%2Frss%2Ftopstories'&format=json&callback=newspaper"></script>
-   <script src="js/prefixfree.min.js"></script>
+   <script src="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D'http%3A%2F%2Frss.jagran.com%2Frss%2Fnews%2Fnational.xml'&format=json&diagnostics=true&callback=newspaper"></script>
+<script src="js/prefixfree.min.js"></script>
 </body>
+
 </html>

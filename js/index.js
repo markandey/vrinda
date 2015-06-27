@@ -30,7 +30,26 @@ var timeSlots = [{
             return false;
         },
         path: 'news.html'
-    }, {
+    },
+    {
+        isTime: function() {
+            var time = new Date();
+            var m = time.getMinutes();
+            var s = time.getSeconds();
+            if (m === 44 ||
+                m === 45 ||
+                m === 14 ||
+                m===15) {
+                if (s % 10 == 0) {
+                    ding();
+                }
+                return true;
+            }
+            return false;
+        },
+        path: 'hindinews.html'
+    }
+    , {
         isTime: function() {
             var time = new Date();
             var s = time.getSeconds();

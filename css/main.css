@@ -96,7 +96,7 @@ html,body{
 
 
 
-@-webkit-keyframes marquee {
+/*@-webkit-keyframes marquee {
   from { -webkit-transform: translateY(0px); }
   to { -webkit-transform: translateY(-5000px); }
 }
@@ -104,15 +104,14 @@ html,body{
 keyframes marquee {
   from { transform: translateY(0px); }
   to { transform: translateY(-5000px); }
-}
+}*/
 
 #newslist{
     list-style-type: none;
-    -webkit-animation: marquee 60s linear infinite;
-    animation: marquee 60s linear infinite;
-    -webkit-animation-delay: 2s; 
-    animation-delay: 2s;
+    position: absolute;
     overflow: hidden;
+    animation: scrollanimation 60s infinite;
+    
 }
 
 
