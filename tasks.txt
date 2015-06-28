@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 tasks
 
 
@@ -9,21 +17,39 @@ export LD_LIBRARY_PATH=/usr/local/lib;export PKG_CONFIG_PATH=/usr/local/lib/pkgc
 
 
 
-1. Fix display
+export LD_LIBRARY_PATH=/usr/local/lib;export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig;pocketsphinx_continuous -samprate 16000 -inmic yespocketsphinx_continuous -adcdev plughw:1,0  -lm ./8917.lm -dict ./8917.dic 2>/dev/null
+
+
+export LD_LIBRARY_PATH=/usr/local/lib;export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig;
+pocketsphinx_continuous -samprate 16000 -inmic yes -adcdev plughw:1,0  -keyphrase "oh mighty computer" -kws_threshold 1e-20
+
+1. Fix Display
+
 2. Set up kiosk boot (http://blogs.wcode.org/2013/09/howto-boot-your-raspberry-pi-into-a-fullscreen-browser-kiosk/)
      Use Epiphany for better html support
+
+3. Git refresh stuff
 3. Install sphinx
 http://cmusphinx.sourceforge.net/wiki/raspberrypi
 sudo apt-get install swig
 sudo apt-get install python2.7-dev
 
 
+4. Useful debugging tool.
+
+5. 
 
 
 
 
 
-#### DUMP INSTRUCTION 
+
+LINKS
+++++++
+https://wolfpaulus.com/jounal/embedded/raspberrypi2-sr/
+http://www.rmnd.net/speech-recognition-on-raspberry-pi-with-sphinx-racket-and-arduino/
+
+#### DUMP INSTRUCTION #####################################
 
 Wired Watershed
 MENU

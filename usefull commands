@@ -1,0 +1,10 @@
+1. Record an audio
+arecord -D plughw:1,0 -f cd test.wav
+
+2. Play audio
+aplay test.wav
+
+
+3. Look at he sound cards
+cat /proc/asound/cards
+
