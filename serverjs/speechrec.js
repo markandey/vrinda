@@ -1,4 +1,4 @@
-var Speakable = require('./');
+var Speakable = require('./node-speakable.js');
 //var API_KEY = process.env.GKEY;
 
 // Setup google speech
