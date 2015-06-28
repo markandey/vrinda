@@ -13,7 +13,7 @@ var Speakable = function Speakable(credentials, options) {
   this.apiResult = {};
   this.apiLang = options.lang || "en-US";
   this.apiKey = credentials.key
-  this.cmd = __dirname + '/sox';
+  this.cmd = '/usr/bin/sox';
   this.cmdArgs = [
     '-q',
     '-b','16',
