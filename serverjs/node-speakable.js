@@ -119,8 +119,8 @@ Speakable.prototype.parseResult = function() {
   var recognizedWords = [], apiResult = this.apiResult.result;
   if(apiResult && apiResult.length > 0 && apiResult[0].alternative && apiResult[0].alternative[0]) {
     recognizedWords = apiResult[0].alternative[0].transcript.split(' ');
-    this.emit('speechResult', recognizedWords);
+    this.emit('speechResult', recognizedWords.join(' '));
   } else {
-    this.emit('speechResult', []);
+    this.emit('speechResult', '');
   }
 }
