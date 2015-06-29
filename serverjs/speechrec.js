@@ -2,7 +2,11 @@ var Speakable = require('./node-speakable.js');
 //var API_KEY = process.env.GKEY;
 
 // Setup google speech
-var speakable = new Speakable({key: 'AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'});
+var speakable = new Speakable({
+    key: 'AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'
+}, {
+    threshold: 1
+});
 
 speakable.on('speechStart', function() {
   console.log('onSpeechStart');

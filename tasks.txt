@@ -37,7 +37,7 @@ sudo apt-get install python2.7-dev
 
 4. Useful debugging tool.
 
-5. 
+5. Silence coeff in node speakable
 
 
 
