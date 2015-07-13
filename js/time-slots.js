@@ -19,6 +19,25 @@ var timeSlots = [{
     {
         isTime: function() {
             var time = new Date();
+            var d= time.getDate();
+            var mn=time.getMonth()
+            var s = time.getSeconds();
+            var m = time.getMinutes();
+            if (d===13 && mn===6 && (
+                    m === 5 ||
+                    m === 22 ||
+                    m === 35 ||
+                    m === 50
+                )) {
+                return true;
+            }
+            return false;
+        },
+        path: 'message.html'
+    },
+    {
+        isTime: function() {
+            var time = new Date();
             var m = time.getMinutes();
             var s = time.getSeconds();
             if (m === 44 ||
