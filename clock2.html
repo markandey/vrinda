@@ -49,9 +49,9 @@ function setTime(){
         var t='<div id="time">{time}</div><div id="date">{date}</div>';
         var ts= time.toLocaleTimeString();
         ts=ts.replace(/(AM|PM)/g,'<span>$1</span>');
+        ts=ts.replace(/PDT/g,'');
         t = t.replace('{time}',ts);
         t = t.replace('{date}',time.toDateString());
-        t = t.replace('{am}','***');
         if(time.getDate()===14 && time.getMonth()===6){
                 t = t+'<div id="msg">Happy Anniversary</div>';
         }
