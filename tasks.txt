@@ -48,6 +48,7 @@ LINKS
 ++++++
 https://wolfpaulus.com/jounal/embedded/raspberrypi2-sr/
 http://www.rmnd.net/speech-recognition-on-raspberry-pi-with-sphinx-racket-and-arduino/
+Clap Switch: https://github.com/moosd/clap2lock/blob/master/clap2lock.sh
 
 #### DUMP INSTRUCTION #####################################
 

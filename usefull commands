@@ -8,3 +8,9 @@ aplay test.wav
 3. Look at he sound cards
 cat /proc/asound/cards
 
+Play beep on your computer
+4. play -n -c1 synth 0.1 square %20
+
+
+5. Look at the sound cards
+cat /proc/asound/cards

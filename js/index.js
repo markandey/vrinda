@@ -1,92 +1,50 @@
-function ding() {
-    var ding = new Audio("sound/ding.wav");
+(function() {
+    var state = {
+        curLocation: "",
+        curiFrame: document.getElementById('main1'),
+        freeiFrame: document.getElementById('main2')
+    };
 
-    ding.play();
-    setTimeout(function() {
-        ding.pause();
-        ding.currentTime = 0;
-    }, 2000);
-}
 
-var curLocation = "";
-var timeSlots = [{
-        isTime: function() {
-            var time = new Date();
-            var m = time.getMinutes();
-            var s = time.getSeconds();
-            if (m === 1 ||
-                m === 2 ||
-                m === 30 ||
-                m === 31 ) {
-                if (s % 10 == 0) {
-                    ding();
-                }
-                return true;
-            }
-            return false;
-        },
-        path: 'news.html'
-    },
-    {
-        isTime: function() {
-            var time = new Date();
-            var m = time.getMinutes();
-            var s = time.getSeconds();
-            if (m === 44 ||
-                m === 45 ||
-                m === 14 ||
-                m===15) {
-                if (s % 10 == 0) {
-                    ding();
-                }
-                return true;
-            }
-            return false;
-        },
-        path: 'hindinews.html'
+    function ding() {
+        var ding = new Audio("sound/ding.wav");
+
+        ding.play();
+        setTimeout(function() {
+            ding.pause();
+            ding.currentTime = 0;
+        }, 2000);
     }
-    , {
-        isTime: function() {
-            var time = new Date();
-            var s = time.getSeconds();
-            if (s > 40 && s < 45) {
-                return true;
-            }
-            return false;
-        },
-        path: 'calendar.html'
-    },
+    function swapIframes (){
+        var f = state.freeiFrame ;
+        var a = state.curiFrame ;
 
-    {
-        isTime: function() {
-            var time = new Date();
-            var s = time.getSeconds();
-            if (s > 10 && s < 30) {
-                return true;
-            }
-            return false;
-        },
-        path: 'weather.html?citi=san jose'
-    }, {
-        isTime: function() {
-            return true;
-        },
-        path: 'clock.html'
+        $(state.curiFrame).hide();
+        $(state.freeiFrame).show();
+        state.curiFrame = f;
+        state.freeiFrame = a;
     }
-];
 
-function run() {
-    var count = timeSlots.length;
-    for (var i = 0; i < count; i++) {
-        if (timeSlots[i].isTime()) {
-            if (curLocation !== timeSlots[i].path) {
-                curLocation = document.getElementById('main').src = timeSlots[i].path;
-            }
-            break
+    function setIframeTo(path) {
+        if (state.curLocation !== path) {
+            state.curLocation = state.freeiFrame.src = path;
+            setTimeout(function(){
+                swapIframes();
+            },500);
         }
     }
-}
-setInterval(run, 1000);
-setTimeout(function() {
-    window.location.reload();
-}, 300000);
+
+    function run() {
+        var count = timeSlots.length;
+        for (var i = 0; i < count; i++) {
+            if (timeSlots[i].isTime()) {
+                setIframeTo(timeSlots[i].path);
+                break
+            }
+        }
+    }
+    setInterval(run, 1000);
+    setTimeout(function() {
+        window.location.reload();
+    }, 300000);
+})();

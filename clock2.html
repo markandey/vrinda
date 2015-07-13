@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Time</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <style type="text/css">
+        html,body{
+                font-size: 273px;
+                background: #444444;
+                font-family: sans-serif;
+        }
+        #main2{
+                position: absolute;
+                height: 100%;
+                width:100%;
+
+        }
+        #time{
+                font-size:100%;
+                color:orange;
+
+        }
+        #time span{
+               font-size:20%; 
+               color: #ddd;
+        }      
+        #date{
+                font-size:40%;
+                color: #eee;
+        }
+        #msg{
+                color: white;
+                font-size:40%;
+                background-image: url("images/heart.gif");
+                background-size: contain;
+                background-color: rgba(130,130,130,0.5);
+        }
+    </style>
+</head>
+
+<body>
+<div id="main2">
+<div id="time">10:04 <span>AM</span></div><div id="date">July 13 2015</div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+function setTime(){
+        var time= new Date();
+        var t='<div id="time">{time}</div><div id="date">{date}</div>';
+        var ts= time.toLocaleTimeString();
+        ts=ts.replace(/(AM|PM)/g,'<span>$1</span>');
+        t = t.replace('{time}',ts);
+        t = t.replace('{date}',time.toDateString());
+        t = t.replace('{am}','***');
+        if(time.getDate()===14 && time.getMonth()===6){
+                t = t+'<div id="msg">Happy Anniversary</div>';
+        }
+        document.getElementById('main2').innerHTML=t;
+}
+setTime();
+setInterval(setTime,900);
+</script>
