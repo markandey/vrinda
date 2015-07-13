@@ -23,7 +23,7 @@ var timeSlots = [{
             var mn=time.getMonth()
             var s = time.getSeconds();
             var m = time.getMinutes();
-            if (d===13 && mn===6 && (
+            if (d===14 && mn===6 && (
                     m === 5 ||
                     m === 22 ||
                     m === 35 ||
