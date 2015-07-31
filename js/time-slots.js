@@ -3,6 +3,20 @@ var timeSlots = [{
             var time = new Date();
             var m = time.getMinutes();
             var s = time.getSeconds();
+            if (m%3===0) {
+                if (s % 10 == 0) {
+                    ding();
+                }
+                return true;
+            }
+            return false;
+        },
+        path: 'news.html'
+    },{
+    isTime: function() {
+            var time = new Date();
+            var m = time.getMinutes();
+            var s = time.getSeconds();
             if (m === 1 ||
                 m === 2 ||
                 m === 30 ||
@@ -15,43 +29,6 @@ var timeSlots = [{
             return false;
         },
         path: 'news.html'
-    },
-    {
-        isTime: function() {
-            var time = new Date();
-            var d= time.getDate();
-            var mn=time.getMonth()
-            var s = time.getSeconds();
-            var m = time.getMinutes();
-            if (d===14 && mn===6 && (
-                    m === 5 ||
-                    m === 22 ||
-                    m === 35 ||
-                    m === 50
-                )) {
-                return true;
-            }
-            return false;
-        },
-        path: 'message.html'
-    },
-    {
-        isTime: function() {
-            var time = new Date();
-            var m = time.getMinutes();
-            var s = time.getSeconds();
-            if (m === 44 ||
-                m === 45 ||
-                m === 14 ||
-                m===15) {
-                if (s % 10 == 0) {
-                    ding();
-                }
-                return true;
-            }
-            return false;
-        },
-        path: 'hindinews.html'
     }
     , {
         isTime: function() {
@@ -74,11 +51,11 @@ var timeSlots = [{
             }
             return false;
         },
-        path: 'weather.html?citi=san jose'
+        path: 'weather.html?citi=sunnyvale'
     }, {
         isTime: function() {
             return true;
         },
-        path: 'clock2.html'
+        path: 'https://www.youtube.com/embed/A3PDXmYoF5U?autoplay=1&theme=light&autohide=1rel=0&theme=light&modestbranding=1&autohide=1&showinfo=0&controls=0&rel=0&vq=hd1080'
     }
 ];
