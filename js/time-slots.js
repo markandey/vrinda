@@ -79,6 +79,6 @@ var timeSlots = [{
         isTime: function() {
             return true;
         },
-        path: 'clock2.html'
+        path: 'clock.html'
     }
 ];

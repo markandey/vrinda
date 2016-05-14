@@ -152,10 +152,10 @@ YUI().use('yql', 'node', 'event', function(Y) {
     function getWheather(citiName) {
         var citiQuery = 'select * from geo.placefinder where text="{{citiName}}"';
         var weatherQuery = 'select * from weather.forecast where woeid={{woeid}}';
-        var weatherQuery2 ='select * from json where url="http://api.openweathermap.org/data/2.5/weather?q={{citiName}}&appid=dc78c01f5dc49c18518524243633d2f6&units=metric"';
+        var weatherQuery2 ='select * from json where url="http://api.openweathermap.org/data/2.5/weather?q={{citiName}}&ttt={{ttt}}&appid=dc78c01f5dc49c18518524243633d2f6&units=metric"';
         // var flickrQuery = 'select * from flickr.photos.search where has_geo="true" and text="{{citiName}}" and api_key="0fbb2b721757f77a6a9d038f4649a2bf"';
         var flickrQuery = 'select * from flickr.photos.search where has_geo="true" and text="{{citiName}}" and api_key="0fbb2b721757f77a6a9d038f4649a2bf" and group_id= "1463451@N25"';
-        var q = weatherQuery2.replace("{{citiName}}", escape(citiName))
+        var q = weatherQuery2.replace("{{citiName}}", escape(citiName)).replace("{{ttt}}", (new Date()).getTime());
 
         function onGetPhotos(r) {
             // try{
