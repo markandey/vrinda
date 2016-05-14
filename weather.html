@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Wheather</title>
     <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
@@ -13,7 +12,7 @@
         font-family: 'Open Sans', sans-serif;
         font-size: 40px;
     }
-    
+
     #main {
         text-align: center;
         min-height: 100%;
@@ -28,7 +27,7 @@
         right: 0;
         z-index: 1;
     }
-    
+
     #inner-container {
         text-shadow: #555 1px 1px 1px;
         text-align: left;
@@ -42,7 +41,7 @@
         right: 0;
         z-index: 2;
     }
-    
+
     #inner-container .condition {
         height: 300px;
         position: fixed;
@@ -52,11 +51,11 @@
         width: auto;
         font-size: 60px;
     }
-    
+
     #inner-container .temp {
         font-size: 500%;
     }
-    
+
     .footer {
         position: fixed;
         bottom: 10px;
@@ -65,51 +64,51 @@
         overflow: hidden;
         font-size: 50%;
     }
-    
+
     .flickr {
         float: left;
     }
-    
+
     .yahoo {
         float: right;
     }
-    
+
     .forecast {
         overflow: hidden;
     }
-    
+
     .forecast .low {
         float: left;
     }
-    
+
     .forecast .high {
         float: right;
     }
-    
+
     .location {
         position: fixed;
         top: 10px;
         right: 10px;
         font-size: 220%;
     }
-    
+
     .bold {
         font-weight: bold;
         font-size: 120%;
     }
-    
+
     .current {
         padding-bottom: 10px;
     }
-    
+
     .current: before {
         border-right: 14px solid transparent;
     }
-    
+
     .location: before {
         margin-right: 10px;
     }
-    
+
     .low: before,
     .high: before {
         margin-right: 25px;
@@ -153,9 +152,10 @@ YUI().use('yql', 'node', 'event', function(Y) {
     function getWheather(citiName) {
         var citiQuery = 'select * from geo.placefinder where text="{{citiName}}"';
         var weatherQuery = 'select * from weather.forecast where woeid={{woeid}}';
+        var weatherQuery2 ='select * from json where url="http://api.openweathermap.org/data/2.5/forecast?q={{citiName}}&appid=dc78c01f5dc49c18518524243633d2f6&units=metric"';
         // var flickrQuery = 'select * from flickr.photos.search where has_geo="true" and text="{{citiName}}" and api_key="0fbb2b721757f77a6a9d038f4649a2bf"';
         var flickrQuery = 'select * from flickr.photos.search where has_geo="true" and text="{{citiName}}" and api_key="0fbb2b721757f77a6a9d038f4649a2bf" and group_id= "1463451@N25"';
-        var q = citiQuery.replace("{{citiName}}", citiName);
+        var q = weatherQuery2.replace("{{citiName}}", escape(citiName))
 
         function onGetPhotos(r) {
             // try{
@@ -187,36 +187,39 @@ YUI().use('yql', 'node', 'event', function(Y) {
         }
 
         function onWheatherData(r) {
-            var cond = r.query.results.channel.item.condition;
-            Y.one("#inner-container .condition .temp").setContent(cond.temp);
-            Y.one("#inner-container .current ").setContent(" &nbsp;" + cond.text);
-            Y.one("#inner-container .location").setContent(" &nbsp;" + r.query.results.channel.title.replace('Yahoo! Weather - ', ''));
-            Y.one("#inner-container .forecast .high").setContent(" &nbsp;" + r.query.results.channel.item.forecast[0].high);
-            Y.one("#inner-container .forecast .low").setContent(" &nbsp;" + r.query.results.channel.item.forecast[0].low);
+
+            var cond = r.query.results.json.list[0];
+            var citi = r.query.results.json.city.name
+
+            Y.one("#inner-container .condition .temp").setContent(Math.floor(cond.main.temp));
+            Y.one("#inner-container .current ").setContent(" &nbsp;" + cond.weather.main);
+            Y.one("#inner-container .location").setContent(" &nbsp;" + citi);
+            Y.one("#inner-container .forecast .high").setContent(" &nbsp;" + cond.main.temp_max);
+            Y.one("#inner-container .forecast .low").setContent(" &nbsp;" + cond.main.temp_min);
 
             //var fq = flickrQuery.replace("{{citiName}}", citiName);
             //fq = fq.replace("{{tag}}", cond.text);
 
         }
 
-        function onWoeIDRecieve(r) {
-            var woeId;
-            if (r.query.results.Result[0]) {
-                woeId = r.query.results.Result[0].woeid;
-            } else {
-                woeId = r.query.results.Result.woeid;
-            }
+        // function onWoeIDRecieve(r) {
+        //     var woeId;
+        //     if (r.query.results.Result[0]) {
+        //         woeId = r.query.results.Result[0].woeid;
+        //     } else {
+        //         woeId = r.query.results.Result.woeid;
+        //     }
 
-            q = weatherQuery.replace("{{woeid}}", woeId);
-            Y.YQL(q, onWheatherData);
+        //     q = weatherQuery.replace("{{citiName}}", woeId);
+        //     Y.YQL(q, onWheatherData);
 
-        }
+        // }
         var fq = flickrQuery.replace("{{citiName}}", citiName);
         Y.YQL(fq, onGetPhotos, {}, {
             base: '://query.yahooapis.com/v1/public/yql?',
             proto: 'https'
         });
-        Y.YQL(q, onWoeIDRecieve);
+        Y.YQL(q, onWheatherData);
 
     }
     var citi = window.location.search.substr(1).match(/citi=([^&]+)/);
@@ -268,7 +271,4 @@ YUI().use('yql', 'node', 'event', function(Y) {
     resize();
 });
 </script>
-
 </html>
-<script type="text/javascript">
-</script>
